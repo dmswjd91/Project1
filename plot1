@@ -1,0 +1,22 @@
+# load data
+mydata <- read.csv("household_power_consumption.txt", header = T, sep = ",")
+
+#convert date variable to class
+mydata$Date(mydata$Date, format = "%d/%m/%y")
+
+# selecting data range
+mydata <- mydata[66637:69516, ]
+
+#convert date and time
+mydata$datetime <- strptime(paste(mydata$Date, mydata$Time), "%y-%m-%d %H:%M:%S")
+
+#factor to numeric
+is.factor(mydata$Global_active_power)
+mydata$Global_active_power <- as.numeric(mydata$Global_active_power)
+
+#create histogram for plot1
+hist(mydata$Global_active_power, main = "Global Active Power", xlab = "Global Active Power (kilowatts)"), col="red")
+
+#save and export
+dev.copy(png, file= "plot1.png", height=480, width=480)
+dev.off()
