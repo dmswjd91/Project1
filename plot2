@@ -1,0 +1,16 @@
+# load data
+mydata <- read.csv("household_power_consumption.txt", header = T, sep = ",")
+
+mydata$Date(mydata$Date, format = "%d/%m/%y")
+mydata <- mydata[66637:69516, ]
+
+mydata$Date <- as.Date(mydata$Date, format = "%d/%m/%y")
+datetime <- paste(as.Date(mydata$Date), mydata$Time)
+mydata$datetime <- as.POSIXct(datetime)
+
+
+plot(mydata$Global_active_power ~ mydata$datetime, type = "l", xlab = "", ylab = "Global Active Power (kilowatts)"))
+
+#save and export
+dev.copy(png, file= "plot2.png", height=480, width=480)
+dev.off()
