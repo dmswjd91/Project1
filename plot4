@@ -1,0 +1,38 @@
+# load data
+mydata <- read.csv("household_power_consumption.txt", header = T, sep = ",")
+
+mydata$Date(mydata$Date, format = "%d/%m/%y")
+subset <- mydata[mydata$Date %in% c("1/2/2007","2/2/2007"),]
+
+datetime <- strptime(paste(subset$Date, subset$Time, sep=""), "%d/%m/%y %H:%M:%S")
+
+#subset at (2,1)
+GlobalActivePower <- as.numeric(subset$Global_active_power)
+
+#subset at (2,2)
+Voltage <- as.numeric(subset$Voltage)
+
+#subset at (2,3)
+subMetering1 <- as.numeric(subset$Sub_metering_1)
+subMetering2 <- as.numeric(subset$Sub_metering_2)
+subMetering3 <- as.numeric(subset$Sub_metering_3)
+
+#subset at (2,4)
+GlobalReactivePower <- as.numeric(subset$Global_reactive_power)
+
+par(mfrow = c(2,2))
+
+#plots
+plot(datetime, GlobalActivePower, type = "l", ylab= "Global Active Power", xlab = "")
+
+plot(datetime, Voltage, type = "l", ylab= "Voltage", xlab = "datetime")
+
+plot(datetime, subMetering1, type = "l", ylab= "Energy Submetering", xlab = "")
+lines(datetime, subMetering2, type = "l", col = "red")
+lines(datetime, subMetering3, type = "l", col = "blue")
+legend("topright", c("Sub_metering_1","Sub_metering_2", "Sub_metering_3", lty = 1, col = c("black","red","blue"))
+
+plot(datetime, GlobalReactivePower, type = "l", ylab= "Global_reactive_power", xlab = "datetime")
+
+dev.copy(png, file= "plot4.png", height=480, width=480)
+dev.off()
